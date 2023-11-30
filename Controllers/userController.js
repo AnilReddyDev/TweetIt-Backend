@@ -45,6 +45,7 @@ const createUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   console.log(email, password);
+  
   if (!email || !password) {
     res.status(400);
     throw new Error("All Fields are Mandatory");
@@ -63,14 +64,10 @@ const loginUser = asyncHandler(async (req, res) => {
       {},
       (err, token) => {
         if (err) throw err;
-        res
-          .cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production", 
-            sameSite: "None", 
-          })
-          .status(200)
-          .json(userExist);
+        // Save token in localStorage
+        localStorage.setItem('token', token);
+
+        res.status(200).json(userExist);
       }
     );
   } else {
@@ -79,8 +76,10 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+
 const userProfile = asyncHandler(async (req, res) => {
-  const { token } = req.cookies;
+  const token = req.headers.authorization;
+
   if (token) {
     jwt.verify(token, process.env.SECRET_KEY, {}, async (err, userData) => {
       if (err) throw err;
@@ -91,6 +90,7 @@ const userProfile = asyncHandler(async (req, res) => {
     res.json(null);
   }
 });
+
 
 const currentUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
