@@ -13,7 +13,7 @@ app.use(cookieParser())
 
 // CORS middleware configuration
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://192.168.0.109:5173');
+    res.header('Access-Control-Allow-Origin', 'https://tweetin.netlify.app');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.header('Access-Control-Allow-Credentials', true);
