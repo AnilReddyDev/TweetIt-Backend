@@ -44,7 +44,7 @@ const createUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
+  // console.log(email, password);
   
   if (!email || !password) {
     res.status(400);
@@ -64,9 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
       {},
       (err, token) => {
         if (err) throw err;
-        // Save token in localStorage
-        localStorage.setItem('token', token);
-
+        res.send(token);
         res.status(200).json(userExist);
       }
     );
@@ -79,15 +77,22 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const userProfile = asyncHandler(async (req, res) => {
   const token = req.headers.authorization;
-
+  // console.log("userprofile token :",token)
   if (token) {
+    // Proceed with token verification and user profile retrieval
     jwt.verify(token, process.env.SECRET_KEY, {}, async (err, userData) => {
-      if (err) throw err;
-      const profileData = await User.findById(userData.id);
-      res.json(profileData);
+      if (err) {
+        // Handle verification errors
+        res.status(401).json({ error: 'Unauthorized' });
+      } else {
+        // Token is valid, retrieve user profile data
+        const profileData = await User.findById(userData.id);
+        res.json(profileData);
+      }
     });
   } else {
-    res.json(null);
+    // If no token is provided
+    res.status(401).json({ error: 'Unauthorized' });
   }
 });
 

@@ -5,19 +5,19 @@ const Tweet = require("../models/tweetModel");
 
 const getAllTweets = asyncHandler(async (req, res) => {
   const allTweets = await Tweet.find();
-  console.log(allTweets);
+  // console.log(allTweets);
   res.status(200).json(allTweets);
 });
 
 const getSelfTweets = asyncHandler(async (req, res) => {
   const selfTweets = await Tweet.find({ ownerid: req.params.id });
-  console.log(selfTweets); //task now to get onlt the tweetpost content
+  // console.log(selfTweets); //task now to get onlt the tweetpost content
   res.status(200).json(selfTweets);
 });
 
 const createTweet = asyncHandler(async (req, res) => {
-  const { tweetpost, tweetimg } = req.body;
-  const { token } = req.cookies;
+  const { tweetpost, tweetimg, token } = req.body;
+  // const { token } = req.cookies;
   var ownerid = '';
   if (token) {
     jwt.verify(token, process.env.SECRET_KEY, {}, (err, userData) => {
