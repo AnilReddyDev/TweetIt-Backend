@@ -4,15 +4,19 @@ const userSchema = mongoose.Schema(
     {
         username:{
             type:String,
-            required:[true, 'Please enter the username']
+            required:true
         },
         email:{
             type:String,
-            required:[true, 'Please enter the email']
+            required:true
         },
         password:{
             type:String,
-            required:[true, 'Please enter the password']
+            required:true
+        },
+        verified:{
+            type:Boolean,
+            default:false
         },
         userimg:{
             type:String,

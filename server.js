@@ -13,7 +13,8 @@ app.use(cookieParser())
 
 // CORS middleware configuration
 app.use(cors({
-  origin: 'https://tweetin.netlify.app', 
+  // origin: 'https://tweetin.netlify.app', 
+  origin:'http://192.168.0.109:5173',
   methods: 'GET, POST, PUT, DELETE',
   allowedHeaders: 'Content-Type, Authorization',
   credentials: true,
